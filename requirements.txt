@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Requirements for Card Matching Game (DSA + WebAssembly)
 
 # System Requirements
@@ -15,3 +16,22 @@ emcc game.c -s WASM=1 -o game.js
 # Note:
 # The "emsdk/" folder is excluded from Git to keep the repository lightweight.
 # End users do not need emsdk unless modifying the C backend and recompiling WASM.
+=======
+# Requirements for Card Matching Game (DSA + WebAssembly)
+
+# System Requirements
+- Any modern browser (Chrome, Firefox, Edge)
+- Internet access to run the HTML/JS in the browser
+
+# Developer Tools
+- Emscripten SDK: https://emscripten.org/docs/getting_started/downloads.html
+- Visual Studio Code (or any code editor)
+- Git for version control
+
+# Compile Command (from project root)
+emcc game.c -s WASM=1 -o game.js
+
+# Note:
+# The "emsdk/" folder is excluded from Git to keep the repository lightweight.
+# End users do not need emsdk unless modifying the C backend and recompiling WASM.
+>>>>>>> db16a16f4959058316a8bf8ba761b825c8a6d150

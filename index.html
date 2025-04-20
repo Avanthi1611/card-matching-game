@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Match Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="card.js"></script>
+  <script>
+    var Module = {
+      onRuntimeInitialized: function () {
+        initGame();
+      }
+    };
+  </script>
+  <script src="game.js"></script>
+</head>
+<body>
+  <h1>🔮 Card Match Game</h1>
+  <h3>Match cards based on memory.</h3>
+  <div id="game-board" class="grid"></div>
+  <div class="controls">
+    <button onclick="restartGame()">Restart</button>
+  </div>
+  <div id="message"></div>
+  <footer>
+    &copy; 2025 Avanthika DG. All rights reserved.
+  </footer>
+</body>
+</html>

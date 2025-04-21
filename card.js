@@ -72,7 +72,7 @@ function flipCard(index) {
 
   if (document.getElementById(`card-${index}`).classList.contains("hint-glow")) {
     console.log(`Flipping hinted card: ${index}`);
-    document.getElementById(`card-${index}`).classList.remove("hint-glow"); // Remove the hint glow
+    document.getElementById(`card-${index}`).classList.remove("hint-glow");
   }
 
   Module._flip_card(index);

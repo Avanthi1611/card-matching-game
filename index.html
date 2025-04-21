@@ -17,13 +17,15 @@
 </head>
 <body>
   <h1>🔮 Card Match Game</h1>
-  <h3>Match cards based on memory.</h>
+  <h3>Match cards based on memory.</h3>
   <div id="game-board" class="grid"></div>
   <div class="controls">
     <button onclick="undoMove()">Undo</button>
     <button onclick="restartGame()">Restart</button>
+    <button id="hint-button" onclick="showHint()">Hint(3/3)</button>
   </div>
   <div id="message"></div>
+  <div id="hint-message"></div>
   <footer>Made with Love by Avanthika DG (24MIS1137)</footer>
 </body>
 </html>

@@ -11,6 +11,7 @@ char* cards[TOTAL_CARDS];
 int revealed[TOTAL_CARDS];
 Stack undo_stack;
 Node* matched_cards = NULL;
+int hint_count = 0;
 
 void strip_pair_suffix(char *filename) {
     char *png_pos = strstr(filename, ".png");
@@ -67,6 +68,8 @@ int check_match(int idx1, int idx2) {
         insert(&matched_cards, strdup(cards[idx1]));
         insert(&matched_cards, strdup(cards[idx2]));
         printf("Match found! Card %d and Card %d\n", idx1, idx2);
+        clear_hint(&matched_cards, cards[idx1]);
+        clear_hint(&matched_cards, cards[idx2]);
         return 1;
     }
     return 0;
@@ -92,26 +95,15 @@ void shuffle_cards() {
     }
 }
 
-EMSCRIPTEN_KEEPALIVE
-EMSCRIPTEN_KEEPALIVE
-void free_list(Node* head) {
-    while (head) {
-        Node* temp = head;
-        head = head->next;
-        free(temp->data);
-        free(temp);
-    }
-}
-
 void init_game() {
+    hint_count = 0;
     for (int i = 0; i < TOTAL_CARDS; i++) {
         revealed[i] = 0;
     }
-    free_list(matched_cards);  // Clear old matches
+    free_list(matched_cards); 
     matched_cards = NULL;
     init_stack(&undo_stack);
 }
-
 
 
 EMSCRIPTEN_KEEPALIVE
@@ -129,4 +121,55 @@ void undo_flip() {
             revealed[last] = 0;
         }
     }
+}
+
+int find_hint_pair(int* idx1, int* idx2) {
+    printf("Entering find_hint_pair function\n");
+    if (hint_count >= 3) {
+        printf("Maximum hint count reached\n");
+        return 0;
+    }
+    for (int i = 0; i < TOTAL_CARDS; i++) {
+        if (revealed[i] || is_matched(i)) continue;
+        for (int j = i + 1; j < TOTAL_CARDS; j++) {
+            if (revealed[j] || is_matched(j)) continue;
+            if (is_matching_pair(cards[i], cards[j])) {
+                printf("Matching pair found: (%d, %d)\n", i, j);
+                mark_hint(&matched_cards, cards[i]);
+                mark_hint(&matched_cards, cards[j]);
+                *idx1 = i;
+                *idx2 = j;
+                hint_count++;
+                return 1; 
+            }
+        }
+    }
+    printf("No matching pair found\n");
+    return 0; 
+}
+
+int hintPair[2];
+
+EMSCRIPTEN_KEEPALIVE
+void get_hint() {
+    int idx1, idx2;
+    if (find_hint_pair(&idx1, &idx2)) {
+        hintPair[0] = idx1;
+        hintPair[1] = idx2;
+    }
+}
+
+EMSCRIPTEN_KEEPALIVE
+int is_card_hinted(int index) {
+    return is_hinted(matched_cards, cards[index]);
+}
+
+EMSCRIPTEN_KEEPALIVE
+int* get_hint_pair() {
+    return hintPair;
+}
+
+EMSCRIPTEN_KEEPALIVE
+int get_hint_count() {
+    return hint_count;
 }
